@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EduFlow — School Management Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --navy:#0f1f3d;--navy2:#1a2f55;
+  --indigo:#4361ee;--indigo2:#5a77f5;--indigo3:rgba(67,97,238,0.1);
+  --cream:#f8f6f1;--cream2:#ede9e0;
+  --gold:#e8a020;--green:#16a34a;--red:#dc2626;--amber:#d97706;
+  --text:#0f1f3d;--text2:#4a5568;--text3:#9ca3af;
+  --border:#e5e7eb;--border2:#d1d5db;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
+  --shadow-lg:0 8px 32px rgba(15,31,61,0.12);
+}
+html,body{height:100%;font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--text);}
+.hidden{display:none!important;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;}
+.btn-primary{background:var(--indigo);color:#fff;}
+.btn-primary:hover{background:var(--indigo2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(67,97,238,.3);}
+.btn-ghost{background:transparent;color:var(--text2);border:1.5px solid var(--border2);}
+.btn-ghost:hover{border-color:var(--indigo);color:var(--indigo);}
+.btn-danger{background:var(--red);color:#fff;}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-blue{background:#dbeafe;color:#1d4ed8;}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-amber{background:#fef3c7;color:#b45309;}
+.badge-red{background:#fee2e2;color:#b91c1c;}
+.badge-gray{background:#f3f4f6;color:#6b7280;}
+.card{background:#fff;border-radius:14px;border:1px solid var(--border);box-shadow:var(--shadow);}
+
+/* ── LOGIN ── */
+#loginScreen{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;animation:fadeIn .5s both;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+
+.login-left{background:var(--navy);display:flex;flex-direction:column;justify-content:space-between;padding:48px;position:relative;overflow:hidden;}
+.login-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(67,97,238,.28) 0%,transparent 60%),radial-gradient(ellipse at 80% 10%,rgba(232,160,32,.14) 0%,transparent 50%);pointer-events:none;}
+.ll-brand{position:relative;z-index:1;}
+.ll-logo{display:flex;align-items:center;gap:12px;margin-bottom:56px;}
+.logo-mark{width:40px;height:40px;background:var(--indigo);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.logo-text{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.logo-text span{color:rgba(255,255,255,.35);}
+.ll-headline{font-family:'Playfair Display',serif;font-size:clamp(34px,3.5vw,50px);color:#fff;line-height:1.1;margin-bottom:18px;letter-spacing:-.02em;}
+.ll-headline em{color:var(--gold);font-style:italic;}
+.ll-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.7;max-width:380px;}
+.ll-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;position:relative;z-index:1;}
+.ls-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:16px;}
+.ls-num{font-size:28px;font-weight:800;color:#fff;line-height:1;}
+.ls-lbl{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;letter-spacing:.04em;}
+
+.login-right{display:flex;align-items:center;justify-content:center;padding:48px;background:var(--cream);}
+.login-box{width:100%;max-width:420px;animation:slideUp .5s .1s both;}
+.login-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.login-sub-txt{font-size:14px;color:var(--text3);margin-bottom:28px;}
+
+.role-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:var(--cream2);border-radius:10px;padding:4px;margin-bottom:24px;}
+.role-tab{padding:10px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600;color:var(--text3);transition:all .25s;display:flex;align-items:center;justify-content:center;gap:7px;border:none;background:transparent;font-family:inherit;}
+.role-tab.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.08);}
+
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:22px;}
+.demo-btn{background:#fff;border:1.5px solid var(--border);border-radius:9px;padding:10px 13px;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit;}
+.demo-btn:hover{border-color:var(--indigo);background:var(--indigo3);}
+.demo-name{font-size:13px;font-weight:600;color:var(--navy);}
+.demo-role{font-size:11px;color:var(--text3);margin-top:1px;}
+
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px;}
+.form-input{width:100%;padding:11px 13px;border:1.5px solid var(--border2);border-radius:9px;font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color .2s;font-family:inherit;}
+.form-input:focus{border-color:var(--indigo);box-shadow:0 0 0 3px var(--indigo3);}
+.form-input::placeholder{color:var(--text3);}
+.login-btn{width:100%;padding:13px;font-size:15px;font-weight:700;}
+.login-err{background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:10px 14px;font-size:13px;color:var(--red);margin-top:10px;display:none;}
+
+/* ── APP SHELL ── */
+#appShell{height:100vh;display:grid;grid-template-rows:58px 1fr;overflow:hidden;}
+
+.topbar{background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;}
+.tb-left{display:flex;align-items:center;gap:16px;}
+.tb-logo{display:flex;align-items:center;gap:9px;}
+.tb-logo-mark{width:30px;height:30px;background:var(--indigo);border-radius:7px;display:flex;align-items:center;justify-content:center;}
+.tb-logo-text{font-size:17px;font-weight:800;color:var(--navy);}
+.tb-divider{width:1px;height:20px;background:var(--border);}
+.tb-role{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.notif-btn{width:34px;height:34px;border-radius:8px;background:var(--cream);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);position:relative;transition:all .2s;}
+.notif-btn:hover{border-color:var(--indigo);}
+.notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);border:2px solid #fff;}
+.user-pill{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:24px;background:var(--cream);border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:border-color .2s;}
+.user-pill:hover{border-color:var(--indigo);}
+.user-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;}
+.user-name{font-size:13px;font-weight:600;color:var(--navy);}
+
+/* ── DROPDOWN WRAPPERS ── */
+.notif-wrap,.profile-wrap{position:relative;}
+
+/* ── NOTIFICATION PANEL ── */
+.notif-panel{position:absolute;top:calc(100% + 10px);right:0;width:320px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(15,31,61,.14);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:500;}
+.notif-panel.open{opacity:1;visibility:visible;transform:none;}
+.notif-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+.notif-hdr-title{font-size:14px;font-weight:700;color:var(--navy);}
+.notif-mark-all{background:none;border:none;font-size:12px;font-weight:600;color:var(--indigo);cursor:pointer;font-family:inherit;}
+.notif-mark-all:hover{text-decoration:underline;}
+.notif-list{max-height:270px;overflow-y:auto;}
+.notif-row{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.notif-row:last-child{border:none;}
+.notif-row:hover{background:var(--cream);}
+.notif-row.unread{background:rgba(67,97,238,.03);}
+.notif-ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.notif-body{flex:1;min-width:0;}
+.notif-msg{font-size:13px;font-weight:500;color:var(--navy);line-height:1.4;}
+.notif-time{font-size:11px;color:var(--text3);margin-top:2px;}
+.notif-pip{width:7px;height:7px;border-radius:50%;background:var(--indigo);flex-shrink:0;margin-top:4px;}
+
+/* ── PROFILE PANEL ── */
+.profile-panel{position:absolute;top:calc(100% + 10px);right:0;width:250px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 32px rgba(15,31,61,.14);opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .2s,transform .2s,visibility .2s;z-index:500;}
+.profile-panel.open{opacity:1;visibility:visible;transform:none;}
+.profile-user{display:flex;align-items:center;gap:11px;padding:16px;border-bottom:1px solid var(--border);}
+.profile-av-lg{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.profile-fullname{font-size:14px;font-weight:700;color:var(--navy);line-height:1.2;}
+.profile-email{font-size:11px;color:var(--text3);margin-top:2px;word-break:break-all;}
+.profile-role-tag{display:inline-block;margin-top:5px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--indigo3);color:var(--indigo);padding:2px 8px;border-radius:20px;}
+.pmenu{padding:7px;}
+.pmenu-item{display:flex;align-items:center;gap:9px;width:100%;padding:9px 11px;border-radius:8px;background:none;border:none;cursor:pointer;font-size:13px;font-weight:500;color:var(--text2);font-family:inherit;transition:all .15s;text-align:left;}
+.pmenu-item:hover{background:var(--cream);color:var(--navy);}
+.pmenu-item svg{flex-shrink:0;color:var(--text3);}
+.pmenu-sep{height:1px;background:var(--border);margin:5px 0;}
+.pmenu-danger{color:#dc2626;}
+.pmenu-danger:hover{background:#fee2e2;color:#dc2626;}
+
+.app-body{display:grid;grid-template-columns:220px 1fr;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.sidebar{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:12px;}
+.nav-sec-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:10px 10px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:500;color:var(--text2);transition:all .2s;border:none;background:transparent;width:100%;font-family:inherit;text-align:left;}
+.nav-item:hover{background:var(--cream);color:var(--navy);}
+.nav-item.active{background:var(--indigo3);color:var(--indigo);font-weight:600;}
+.nav-icon{width:17px;height:17px;flex-shrink:0;color:var(--text3);}
+.nav-item.active .nav-icon{color:var(--indigo);}
+.nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;}
+.sidebar-bottom{margin-top:auto;padding:12px 0 4px;border-top:1px solid var(--border);}
+.logout-btn{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:14px;font-weight:500;color:var(--red);cursor:pointer;background:transparent;border:none;font-family:inherit;transition:background .2s;}
+.logout-btn:hover{background:#fee2e2;}
+
+/* ── MAIN ── */
+.main-content{overflow-y:auto;padding:26px;background:var(--cream);}
+.page-hdr{margin-bottom:22px;}
+.page-hdr h1{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);letter-spacing:-.02em;}
+.page-hdr p{font-size:13px;color:var(--text3);margin-top:4px;}
+
+/* ── KPI STRIP ── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:17px 19px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:3px 0 0 3px;}
+.kpi.blue::before{background:var(--indigo);}
+.kpi.green::before{background:var(--green);}
+.kpi.amber::before{background:var(--amber);}
+.kpi.red::before{background:var(--red);}
+.kpi-lbl{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:7px;}
+.kpi-val{font-size:28px;font-weight:800;color:var(--navy);line-height:1;}
+.kpi-sub{font-size:12px;color:var(--text3);margin-top:4px;}
+.kpi-up{font-size:12px;font-weight:600;color:var(--green);margin-top:4px;}
+.kpi-dn{font-size:12px;font-weight:600;color:var(--red);margin-top:4px;}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.mb14{margin-bottom:14px;}
+
+/* ── CARD HEADER ── */
+.card-hdr{display:flex;align-items:center;justify-content:space-between;padding:17px 19px;border-bottom:1px solid var(--border);}
+.card-title{font-size:15px;font-weight:700;color:var(--navy);}
+.card-sub{font-size:12px;color:var(--text3);margin-top:2px;}
+
+/* ── TABLE ── */
+.dtable{width:100%;border-collapse:collapse;}
+.dtable thead th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);padding:10px 16px;text-align:left;background:var(--cream);border-bottom:1px solid var(--border);}
+.dtable tbody tr{border-bottom:1px solid var(--border);transition:background .15s;cursor:pointer;}
+.dtable tbody tr:last-child{border:none;}
+.dtable tbody tr:hover{background:#fafafe;}
+.dtable td{padding:12px 16px;font-size:13px;color:var(--text2);vertical-align:middle;}
+.dtable td:first-child{font-weight:600;color:var(--navy);}
+
+/* ── PROGRESS ── */
+.pbar{height:5px;background:var(--cream2);border-radius:3px;overflow:hidden;}
+.pfill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.25,.46,.45,.94);}
+
+/* ── HW CARDS ── */
+.hw-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:14px 16px;display:flex;align-items:flex-start;gap:13px;margin-bottom:9px;transition:all .2s;}
+.hw-card:hover{border-color:var(--indigo);box-shadow:0 2px 12px rgba(67,97,238,.07);}
+.hw-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.hw-subj{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:3px;}
+.hw-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;}
+.hw-desc{font-size:12px;color:var(--text3);line-height:1.5;}
+.hw-meta{margin-top:8px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+.due-urgent{font-size:12px;font-weight:600;color:var(--red);}
+.due-soon{font-size:12px;font-weight:600;color:var(--amber);}
+.due-ok{font-size:12px;font-weight:600;color:var(--green);}
+.hw-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;margin-top:2px;}
+.hw-check.done{background:var(--green);border-color:var(--green);}
+.hw-check .ck{display:none;width:11px;height:11px;}
+.hw-check.done .ck{display:block;}
+
+/* ── GRADES ── */
+.grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:18px;}
+.gs{background:var(--cream);border-radius:9px;padding:14px;text-align:center;}
+.gs-name{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px;}
+.gs-grade{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;line-height:1;}
+.A{color:var(--green);}
+.B{color:var(--indigo);}
+.C{color:var(--amber);}
+.D{color:var(--red);}
+.gs-pct{font-size:12px;color:var(--text3);margin-top:2px;}
+.gs-trend{font-size:11px;margin-top:5px;}
+
+/* ── ATTENDANCE ── */
+.att-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:18px;}
+.att-dh{font-size:9px;font-weight:700;text-align:center;color:var(--text3);padding-bottom:7px;letter-spacing:.06em;}
+.att-d{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;cursor:default;transition:transform .15s;}
+.att-d:hover{transform:scale(1.12);}
+.att-P{background:#dcfce7;color:#15803d;}
+.att-A{background:#fee2e2;color:#b91c1c;}
+.att-L{background:#fef3c7;color:#b45309;}
+.att-W{background:var(--cream2);color:var(--text3);}
+.att-F{background:var(--cream);color:var(--border2);}
+
+/* ── PAYMENTS ── */
+.pay-row{display:flex;align-items:center;gap:13px;padding:13px 19px;border-bottom:1px solid var(--border);}
+.pay-row:last-child{border:none;}
+.pay-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.pay-desc{flex:1;}
+.pay-name{font-size:14px;font-weight:600;color:var(--navy);}
+.pay-date{font-size:12px;color:var(--text3);margin-top:1px;}
+.pay-amt{font-size:16px;font-weight:700;}
+
+/* ── SCHEDULE ── */
+.sched-day{margin-bottom:18px;}
+.sched-date-lbl{font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;padding-left:2px;}
+.sched-item{display:flex;gap:13px;padding:11px 13px;background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:7px;transition:all .2s;}
+.sched-item:hover{border-color:var(--indigo);}
+.sched-time{font-size:11px;font-weight:700;color:var(--text3);width:70px;flex-shrink:0;padding-top:2px;}
+.sched-bar{width:3px;border-radius:2px;flex-shrink:0;align-self:stretch;min-height:36px;}
+.sched-class{font-size:14px;font-weight:600;color:var(--navy);}
+.sched-room{font-size:12px;color:var(--text3);margin-top:1px;}
+
+/* ── GRADE ENTRY ── */
+.gentry-input{border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-weight:600;text-align:center;color:var(--navy);background:#fff;font-family:inherit;outline:none;transition:border-color .2s;width:62px;}
+.gentry-input:focus{border-color:var(--indigo);background:var(--indigo3);}
+
+/* ── ASSIGNMENT FORM ── */
+.aform{padding:18px;}
+.aform-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.atextarea{width:100%;padding:10px 13px;border:1.5px solid var(--border2);border-radius:9px;font-size:13px;color:var(--text);background:#fff;resize:vertical;min-height:80px;outline:none;font-family:inherit;}
+.atextarea:focus{border-color:var(--indigo);}
+
+/* ── UPLOAD ── */
+.upload-area{border:2px dashed var(--border2);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;margin:16px 19px;}
+.upload-area:hover{border-color:var(--indigo);background:var(--indigo3);}
+
+/* ── ANNOUNCEMENT ── */
+.ann-card{background:#fff;border:1px solid var(--border);border-radius:11px;padding:15px 17px;margin-bottom:9px;}
+.ann-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;}
+.ann-title{font-size:14px;font-weight:700;color:var(--navy);}
+.ann-class{font-size:11px;color:var(--text3);margin-top:1px;}
+.ann-body{font-size:13px;color:var(--text2);line-height:1.6;}
+.ann-meta{display:flex;align-items:center;gap:9px;margin-top:9px;font-size:11px;color:var(--text3);}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(15,31,61,.4);backdrop-filter:blur(4px);z-index:1000;display:flex;align-items:center;justify-content:center;animation:fadeIn .2s;}
+.modal-box{background:#fff;border-radius:14px;box-shadow:0 24px 80px rgba(15,31,61,.18);width:90%;max-width:500px;animation:slideUp .3s;}
+.modal-hdr{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);}
+.modal-close{width:28px;height:28px;border-radius:6px;background:var(--cream);border:none;cursor:pointer;font-size:15px;color:var(--text3);display:flex;align-items:center;justify-content:center;}
+.modal-body{padding:22px;}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:9px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--navy);color:#fff;padding:11px 18px;border-radius:9px;font-size:13px;font-weight:500;z-index:9999;box-shadow:var(--shadow-lg);animation:slideUp .3s both;}
+.toast.ok{background:#15803d;}
+.toast.err{background:var(--red);}
+
+/* ── ROSTER STATS ── */
+.rstat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);}
+.rstat{text-align:center;background:var(--cream);border-radius:8px;padding:12px;}
+.rstat-val{font-size:22px;font-weight:800;color:var(--navy);}
+.rstat-lbl{font-size:10px;color:var(--text3);margin-top:2px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;}
+
+@media(max-width:900px){
+  #loginScreen{grid-template-columns:1fr;}
+  .login-left{display:none;}
+  .kpi-row{grid-template-columns:1fr 1fr;}
+  .app-body{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .g2,.g3{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══ -->
+<div id="loginScreen">
+  <div class="login-left">
+    <div class="ll-brand">
+      <div class="ll-logo">
+        <div class="logo-mark">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="logo-text">Edu<span>Flow</span></span>
+      </div>
+      <div class="ll-headline">Where learning<br>meets <em>clarity.</em></div>
+      <div class="ll-sub">A unified platform for students and teachers. Grades, attendance, payments, and communication — all in one place.</div>
+    </div>
+    <div class="ll-stats">
+      <div class="ls-box"><div class="ls-num">512</div><div class="ls-lbl">Students enrolled</div></div>
+      <div class="ls-box"><div class="ls-num">38</div><div class="ls-lbl">Active classes</div></div>
+      <div class="ls-box"><div class="ls-num">97%</div><div class="ls-lbl">Attendance rate</div></div>
+    </div>
+  </div>
+  <div class="login-right">
+    <div class="login-box">
+      <div class="login-title">Welcome back</div>
+      <div class="login-sub-txt">Sign in to your EduFlow account</div>
+      <div class="role-tabs">
+        <button class="role-tab active" id="tabS" onclick="setRole('student')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+          Student
+        </button>
+        <button class="role-tab" id="tabT" onclick="setRole('teacher')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          Teacher
+        </button>
+      </div>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;">Quick demo login</div>
+      <div class="demo-grid" id="demoGrid"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="lEmail" placeholder="you@eduflow.edu"/></div>
+      <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" id="lPass" placeholder="••••••••"/></div>
+      <button class="btn btn-primary login-btn" onclick="doLogin()">Sign in to EduFlow</button>
+      <div class="login-err" id="loginErr">Incorrect credentials. Use a demo account above.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="appShell" class="hidden">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-logo">
+        <div class="tb-logo-mark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="tb-logo-text">Edu<span style="color:var(--text3);">Flow</span></span>
+      </div>
+      <div class="tb-divider"></div>
+      <div class="tb-role" id="tbRole">—</div>
+    </div>
+    <div class="tb-right">
+      <!-- NOTIFICATIONS -->
+      <div class="notif-wrap">
+        <button class="notif-btn" id="notifBtn" onclick="toggleNotif(event)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <div class="notif-dot" id="notifDot"></div>
+        </button>
+        <div class="notif-panel" id="notifPanel">
+          <div class="notif-hdr">
+            <span class="notif-hdr-title">Notifications</span>
+            <button class="notif-mark-all" onclick="markAllRead()">Mark all read</button>
+          </div>
+          <div class="notif-list" id="notifList"></div>
+        </div>
+      </div>
+      <!-- PROFILE -->
+      <div class="profile-wrap">
+        <button class="user-pill" id="profileBtn" onclick="toggleProfile(event)">
+          <div class="user-av" id="tbAv" style="background:var(--indigo);">?</div>
+          <span class="user-name" id="tbName">—</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--text3);margin-left:2px;flex-shrink:0;"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="profile-panel" id="profilePanel">
+          <div class="profile-user">
+            <div class="profile-av-lg" id="pAvLg" style="background:var(--indigo);">?</div>
+            <div>
+              <div class="profile-fullname" id="pFullName">—</div>
+              <div class="profile-email" id="pEmail">—</div>
+              <div class="profile-role-tag" id="pRoleTag">—</div>
+            </div>
+          </div>
+          <div class="pmenu">
+            <button class="pmenu-item" onclick="openMyProfile();closeDropdowns()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>My Profile
+            </button>
+            <button class="pmenu-item" onclick="openSettings();closeDropdowns()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings
+            </button>
+            <div class="pmenu-sep"></div>
+            <button class="pmenu-item pmenu-danger" onclick="doLogout();closeDropdowns()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <aside class="sidebar">
+      <div id="sidebarNav"></div>
+      <div class="sidebar-bottom">
+        <button class="logout-btn" onclick="doLogout()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </aside>
+    <main class="main-content" id="mainContent"></main>
+  </div>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div class="modal-bg hidden" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title" id="mTitle"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="mBody"></div>
+    <div class="modal-foot" id="mFoot"></div>
+  </div>
+</div>
+
+<script>
+/* ══ DATA ══ */
+const ACCOUNTS = {
+  'layla@student.edu':  {pass:'student123',role:'student',name:'Layla Hassan',av:'LH',avBg:'#4361ee',class:'9A'},
+  'omar@student.edu':   {pass:'student123',role:'student',name:'Omar Benali',av:'OB',avBg:'#16a34a',class:'10B'},
+  'nour@teacher.edu':   {pass:'teacher123',role:'teacher',name:'Dr. Nour Aziz',av:'NA',avBg:'#7c3aed',subject:'Mathematics'},
+  'karim@teacher.edu':  {pass:'teacher123',role:'teacher',name:'Mr. Karim Saad',av:'KS',avBg:'#d97706',subject:'Physics'},
+};
+const DEMOS = {
+  student:[
+    {e:'layla@student.edu',p:'student123',n:'Layla Hassan',s:'Grade 9A · Student'},
+    {e:'omar@student.edu',p:'student123',n:'Omar Benali',s:'Grade 10B · Student'},
+  ],
+  teacher:[
+    {e:'nour@teacher.edu',p:'teacher123',n:'Dr. Nour Aziz',s:'Mathematics · Teacher'},
+    {e:'karim@teacher.edu',p:'teacher123',n:'Mr. Karim Saad',s:'Physics · Teacher'},
+  ]
+};
+
+let curRole='student', curUser=null;
+
+const SD = {
+  homework:[
+    {id:1,subj:'Mathematics',icon:'📐',bg:'#dbeafe',title:'Chapter 7 — Quadratic Equations',desc:'Complete exercises 7.1–7.4 from the textbook. Show all working steps.',due:'Tomorrow',urg:'urgent',done:false},
+    {id:2,subj:'English Literature',icon:'📖',bg:'#fce7f3',title:'Essay Draft: Climate & Society',desc:'Write a 600-word argumentative essay. Submit via portal before midnight.',due:'Dec 15',urg:'soon',done:false},
+    {id:3,subj:'Physics',icon:'⚗️',bg:'#d1fae5',title:'Lab Report: Free Fall Experiment',desc:'Write up your observations from Tuesday\'s lab. Include error analysis.',due:'Dec 18',urg:'ok',done:false},
+    {id:4,subj:'History',icon:'🏛️',bg:'#fef3c7',title:'Research: WWI Causes',desc:'One-page summary of the primary causes. Cite at least 3 sources.',due:'Dec 20',urg:'ok',done:false},
+    {id:5,subj:'Mathematics',icon:'📐',bg:'#dbeafe',title:'Practice Test — Geometry',desc:'Complete the timed practice test on pages 134–136.',due:'Dec 10',urg:'urgent',done:true},
+  ],
+  grades:[
+    {subj:'Mathematics',teacher:'Dr. Nour Aziz',grade:'A',pct:94,trend:'+3',g:'A',items:[{n:'Chapter 6 Test',s:'47/50',d:'Nov 28',w:'30%'},{n:'Homework Avg',s:'95%',d:'Ongoing',w:'20%'},{n:'Midterm Exam',s:'88/100',d:'Nov 10',w:'50%'}]},
+    {subj:'Physics',teacher:'Mr. Karim Saad',grade:'B+',pct:87,trend:'+1',g:'B',items:[{n:'Lab Reports',s:'43/50',d:'Nov 30',w:'25%'},{n:'Quiz Average',s:'82%',d:'Ongoing',w:'25%'},{n:'Midterm Exam',s:'89/100',d:'Nov 12',w:'50%'}]},
+    {subj:'English',teacher:'Ms. Amina Rao',grade:'A-',pct:91,trend:'–',g:'A',items:[{n:'Essay 1',s:'91/100',d:'Nov 20',w:'40%'},{n:'Participation',s:'95%',d:'Ongoing',w:'20%'},{n:'Midterm',s:'86/100',d:'Nov 11',w:'40%'}]},
+    {subj:'History',teacher:'Mr. Yusuf Nidal',grade:'B',pct:83,trend:'-2',g:'B',items:[{n:'Research Paper',s:'83/100',d:'Nov 25',w:'35%'},{n:'Quiz Average',s:'78%',d:'Ongoing',w:'25%'},{n:'Midterm',s:'85/100',d:'Nov 13',w:'40%'}]},
+    {subj:'Art',teacher:'Ms. Sofia Diaz',grade:'A+',pct:98,trend:'+5',g:'A',items:[{n:'Portfolio',s:'99/100',d:'Nov 22',w:'60%'},{n:'Participation',s:'97%',d:'Ongoing',w:'40%'}]},
+    {subj:'French',teacher:'Mme. Chloé Petit',grade:'B+',pct:86,trend:'+2',g:'B',items:[{n:'Oral Exam',s:'86/100',d:'Nov 28',w:'40%'},{n:'Written Test',s:'85/100',d:'Nov 15',w:'60%'}]},
+  ],
+  att:{rate:97,present:58,absent:1,late:1,
+    // Dec 2024 layout: starts on Sunday
+    days:[null,null,'P','P','P','P','P','W','W','P','P','P','P','P','W','W','P','P','A','P','P','W','W','P','P','P','L','P','W','W','F','F']
+  },
+  payments:[
+    {id:1,name:'Spring Semester Tuition',amt:2400,due:'Jan 15, 2025',status:'pending',icon:'🎓',bg:'#dbeafe'},
+    {id:2,name:'December Canteen Balance',amt:85,due:'Dec 31, 2024',status:'pending',icon:'🍽️',bg:'#fef3c7'},
+    {id:3,name:'Fall Semester Tuition',amt:2400,paid:'Sep 1, 2024',status:'paid',icon:'🎓',bg:'#dcfce7'},
+    {id:4,name:'School Trip — Istanbul Museum',amt:60,paid:'Oct 12, 2024',status:'paid',icon:'🚌',bg:'#dcfce7'},
+    {id:5,name:'Sports Day Registration',amt:25,paid:'Nov 5, 2024',status:'paid',icon:'⚽',bg:'#dcfce7'},
+  ],
+  schedule:[
+    {day:'Monday',date:'Dec 9',classes:[
+      {time:'08:00–09:30',name:'Mathematics',teacher:'Dr. Nour Aziz',room:'Room 12A',color:'#dbeafe'},
+      {time:'09:45–11:15',name:'Physics',teacher:'Mr. Karim Saad',room:'Lab 3',color:'#d1fae5'},
+      {time:'12:00–13:30',name:'English',teacher:'Ms. Amina Rao',room:'Room 7B',color:'#fce7f3'},
+      {time:'14:00–15:30',name:'History',teacher:'Mr. Yusuf Nidal',room:'Room 5A',color:'#fef3c7'},
+    ]},
+    {day:'Tuesday',date:'Dec 10',classes:[
+      {time:'08:00–09:30',name:'French',teacher:'Mme. Chloé Petit',room:'Room 9C',color:'#ede9fe'},
+      {time:'09:45–11:15',name:'Art',teacher:'Ms. Sofia Diaz',room:'Studio 2',color:'#fce7f3'},
+      {time:'12:00–13:30',name:'Mathematics',teacher:'Dr. Nour Aziz',room:'Room 12A',color:'#dbeafe'},
+    ]},
+    {day:'Wednesday',date:'Dec 11',classes:[
+      {time:'08:00–09:30',name:'English',teacher:'Ms. Amina Rao',room:'Room 7B',color:'#fce7f3'},
+      {time:'09:45–11:15',name:'History',teacher:'Mr. Yusuf Nidal',room:'Room 5A',color:'#fef3c7'},
+      {time:'14:00–15:30',name:'French',teacher:'Mme. Chloé Petit',room:'Room 9C',color:'#ede9fe'},
+    ]},
+  ]
+};
+
+const TD = {
+  classes:[
+    {id:'9A',name:'Grade 9A',subj:'Mathematics',students:28,room:'Room 12A',times:'Mon/Wed/Thu 08:00',color:'#dbeafe'},
+    {id:'10B',name:'Grade 10B',subj:'Mathematics',students:30,room:'Room 12A',times:'Tue/Fri 10:00',color:'#ede9fe'},
+    {id:'11A',name:'Grade 11A',subj:'Advanced Math',students:24,room:'Room 14B',times:'Mon/Thu 12:00',color:'#d1fae5'},
+  ],
+  students:[
+    {id:'S01',name:'Layla Hassan',att:98,q1:47,q2:45,mid:91,proj:95,avg:92,grade:'A'},
+    {id:'S02',name:'Omar Diallo',att:95,q1:41,q2:39,mid:80,proj:88,avg:82,grade:'B'},
+    {id:'S03',name:'Sara Mourad',att:100,q1:49,q2:48,mid:98,proj:99,avg:98,grade:'A+'},
+    {id:'S04',name:'Ahmed Khalil',att:72,q1:32,q2:35,mid:68,proj:72,avg:69,grade:'D'},
+    {id:'S05',name:'Nadia Benali',att:96,q1:44,q2:46,mid:89,proj:90,avg:90,grade:'A-'},
+    {id:'S06',name:'Yusuf Al-Rashid',att:89,q1:38,q2:40,mid:77,proj:80,avg:78,grade:'C+'},
+    {id:'S07',name:'Hana Okoye',att:94,q1:46,q2:45,mid:93,proj:94,avg:92,grade:'A'},
+    {id:'S08',name:'Karim Slim',att:91,q1:42,q2:41,mid:85,proj:87,avg:85,grade:'B+'},
+  ],
+  assignments:[
+    {id:1,title:'Chapter 7 — Quadratic Equations',cls:'9A',due:'Dec 10',subs:21,total:28,type:'Homework'},
+    {id:2,title:'Midterm Makeup Exam',cls:'11A',due:'Dec 12',subs:4,total:4,type:'Exam'},
+    {id:3,title:'Practice Test — Geometry',cls:'10B',due:'Dec 15',subs:28,total:30,type:'Quiz'},
+    {id:4,title:'Chapter 8 Problem Set',cls:'9A',due:'Dec 20',subs:0,total:28,type:'Homework'},
+  ],
+  announcements:[
+    {id:1,title:'Midterm Results Posted',cls:'Grade 9A',body:'Your midterm grades are now available. Please review and reach out during office hours (Tues 3–4pm) with any questions.',date:'Dec 5',author:'Dr. Nour Aziz'},
+    {id:2,title:'Chapter 7 Test — Rescheduled',cls:'Grade 10B',body:'Due to the school event on Dec 13, the Chapter 7 test has moved to December 16. Study guide has been posted.',date:'Dec 4',author:'Dr. Nour Aziz'},
+  ]
+};
+
+/* ══ LOGIN ══ */
+function setRole(r){
+  curRole=r;
+  document.getElementById('tabS').classList.toggle('active',r==='student');
+  document.getElementById('tabT').classList.toggle('active',r==='teacher');
+  renderDemos();
+}
+function renderDemos(){
+  document.getElementById('demoGrid').innerHTML=DEMOS[curRole].map(d=>
+    `<div class="demo-btn" onclick="qLogin('${d.e}','${d.p}')"><div class="demo-name">${d.n}</div><div class="demo-role">${d.s}</div></div>`
+  ).join('');
+}
+function qLogin(e,p){document.getElementById('lEmail').value=e;document.getElementById('lPass').value=p;setTimeout(doLogin,60);}
+function doLogin(){
+  const e=document.getElementById('lEmail').value.trim();
+  const p=document.getElementById('lPass').value;
+  const a=ACCOUNTS[e];
+  document.getElementById('loginErr').style.display='none';
+  if(!a||a.pass!==p){document.getElementById('loginErr').style.display='block';return;}
+  curUser={...a,email:e};
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('appShell').classList.remove('hidden');
+  initApp();
+}
+function doLogout(){
+  curUser=null;
+  document.getElementById('appShell').classList.add('hidden');
+  document.getElementById('loginScreen').classList.remove('hidden');
+  document.getElementById('lEmail').value='';
+  document.getElementById('lPass').value='';
+}
+
+/* ══ INIT ══ */
+function initApp(){
+  document.getElementById('tbRole').textContent=curUser.role==='student'?`Student · Class ${curUser.class}`:`Teacher · ${curUser.subject}`;
+  document.getElementById('tbName').textContent=curUser.name.split(' ')[0];
+  const av=document.getElementById('tbAv');
+  av.textContent=curUser.av; av.style.background=curUser.avBg;
+
+  const isS=curUser.role==='student';
+  const navs=isS?[
+    {id:'dash',lbl:'Dashboard',ic:iGrid()},
+    {id:'hw',lbl:'Homework',ic:iBook(),badge:SD.homework.filter(h=>!h.done).length},
+    {id:'grades',lbl:'My Grades',ic:iStar()},
+    {id:'att',lbl:'Attendance',ic:iCal()},
+    {id:'pay',lbl:'Payments',ic:iCard(),badge:SD.payments.filter(p=>p.status==='pending').length},
+    {id:'sched',lbl:'Schedule',ic:iClock()},
+  ]:[
+    {id:'dash',lbl:'Dashboard',ic:iGrid()},
+    {id:'gentry',lbl:'Grade Entry',ic:iStar()},
+    {id:'roster',lbl:'Class Roster',ic:iUsers()},
+    {id:'assign',lbl:'Assignments',ic:iBook()},
+    {id:'ann',lbl:'Announcements',ic:iBell()},
+  ];
+
+  document.getElementById('sidebarNav').innerHTML=`<div class="nav-sec-lbl">Menu</div>`+navs.map(n=>
+    `<button class="nav-item${n.id==='dash'?' active':''}" data-sec="${n.id}" onclick="go('${n.id}',this)">${n.ic}${n.lbl}${n.badge?`<span class="nav-badge">${n.badge}</span>`:''}</button>`
+  ).join('');
+
+  // Populate profile dropdown
+  document.getElementById('pAvLg').textContent  = curUser.av;
+  document.getElementById('pAvLg').style.background = curUser.avBg;
+  document.getElementById('pFullName').textContent = curUser.name;
+  document.getElementById('pEmail').textContent    = curUser.email;
+  document.getElementById('pRoleTag').textContent  = curUser.role.charAt(0).toUpperCase()+curUser.role.slice(1);
+  buildNotifList();
+
+  render('dash');
+}
+
+/* ══ NOTIFICATIONS ══ */
+const NOTIFS = {
+  student:[
+    {id:1,bg:'#dbeafe',ico:'📐',msg:'New homework posted: Chapter 7 — Quadratic Equations',time:'2 hours ago',unread:true},
+    {id:2,bg:'#dcfce7',ico:'📊',msg:'Your Midterm grade has been updated — check My Grades',time:'Yesterday',unread:true},
+    {id:3,bg:'#fef3c7',ico:'📢',msg:'Dr. Nour Aziz: Chapter 7 Test rescheduled to Dec 16',time:'Dec 4',unread:false},
+    {id:4,bg:'#ede9fe',ico:'💳',msg:'Spring Semester Tuition due Jan 15 — pay now',time:'Dec 3',unread:false},
+  ],
+  teacher:[
+    {id:1,bg:'#dbeafe',ico:'📝',msg:'21/28 students submitted Chapter 7 Homework (9A)',time:'1 hour ago',unread:true},
+    {id:2,bg:'#fee2e2',ico:'⚠️',msg:'Ahmed Khalil attendance dropped below 75%',time:'Today',unread:true},
+    {id:3,bg:'#fef3c7',ico:'📢',msg:'Staff meeting: Monday Dec 9 at 14:00 in Room A12',time:'Dec 5',unread:false},
+    {id:4,bg:'#dcfce7',ico:'✅',msg:'Midterm Makeup Exam (11A) — all 4 students submitted',time:'Dec 4',unread:false},
+  ]
+};
+
+function getNotifs(){ return NOTIFS[curUser?.role==='teacher'?'teacher':'student']; }
+
+function buildNotifList(){
+  const ns = getNotifs();
+  document.getElementById('notifList').innerHTML = ns.map(n=>`
+    <div class="notif-row${n.unread?' unread':''}" onclick="readNotif(${n.id})">
+      <div class="notif-ico" style="background:${n.bg}">${n.ico}</div>
+      <div class="notif-body"><div class="notif-msg">${n.msg}</div><div class="notif-time">${n.time}</div></div>
+      ${n.unread?'<div class="notif-pip"></div>':''}
+    </div>`).join('');
+  document.getElementById('notifDot').style.display = ns.some(n=>n.unread)?'block':'none';
+}
+
+function readNotif(id){
+  ['student','teacher'].forEach(r=>{ const n=NOTIFS[r].find(x=>x.id===id); if(n)n.unread=false; });
+  buildNotifList();
+}
+
+function markAllRead(){
+  ['student','teacher'].forEach(r=>NOTIFS[r].forEach(n=>n.unread=false));
+  buildNotifList();
+  showToast('All notifications marked as read ✓','ok');
+}
+
+/* ══ DROPDOWNS ══ */
+let _notifOpen=false, _profileOpen=false;
+
+function toggleNotif(e){
+  e.stopPropagation();
+  _notifOpen=!_notifOpen; _profileOpen=false;
+  document.getElementById('notifPanel').classList.toggle('open',_notifOpen);
+  document.getElementById('profilePanel').classList.remove('open');
+}
+
+function toggleProfile(e){
+  e.stopPropagation();
+  _profileOpen=!_profileOpen; _notifOpen=false;
+  document.getElementById('profilePanel').classList.toggle('open',_profileOpen);
+  document.getElementById('notifPanel').classList.remove('open');
+}
+
+function closeDropdowns(){
+  _notifOpen=false; _profileOpen=false;
+  document.getElementById('notifPanel').classList.remove('open');
+  document.getElementById('profilePanel').classList.remove('open');
+}
+
+document.addEventListener('click', closeDropdowns);
+
+/* ══ PROFILE MODAL ══ */
+function openMyProfile(){
+  const isS = curUser.role==='student';
+  openModal('My Profile',`
+    <div style="text-align:center;padding:8px 0 20px;">
+      <div style="width:64px;height:64px;border-radius:50%;background:${curUser.avBg};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 12px;">${curUser.av}</div>
+      <div style="font-size:18px;font-weight:700;color:var(--navy);">${curUser.name}</div>
+      <div style="font-size:13px;color:var(--text3);margin-top:3px;">${curUser.email}</div>
+      <div style="display:inline-block;margin-top:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--indigo3);color:var(--indigo);padding:3px 12px;border-radius:20px;">${curUser.role}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      ${isS?`
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Class</div><div style="font-weight:700;color:var(--navy);">Grade ${curUser.class}</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">GPA</div><div style="font-weight:700;color:var(--green);">3.8</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Attendance</div><div style="font-weight:700;color:var(--navy);">97%</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Year</div><div style="font-weight:700;color:var(--navy);">2024/25</div></div>
+      `:`
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Subject</div><div style="font-weight:700;color:var(--navy);">${curUser.subject}</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Classes</div><div style="font-weight:700;color:var(--navy);">3 Active</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Students</div><div style="font-weight:700;color:var(--navy);">82</div></div>
+        <div style="background:var(--cream);border-radius:10px;padding:13px;text-align:center;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:5px;">Year</div><div style="font-weight:700;color:var(--navy);">2024/25</div></div>
+      `}
+    </div>`,
+    [{lbl:'Close',action:'closeModal()'}]
+  );
+}
+
+function openSettings(){
+  openModal('Settings',`
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="form-group" style="margin:0;"><label class="form-label">Display Name</label><input class="form-input" value="${curUser.name}" style="background:var(--cream2);" readonly/></div>
+      <div class="form-group" style="margin:0;"><label class="form-label">Email</label><input class="form-input" value="${curUser.email}" style="background:var(--cream2);" readonly/></div>
+      <div class="form-group" style="margin:0;"><label class="form-label">Language</label><select class="form-input"><option>English</option><option>Français</option><option>العربية</option><option>Türkçe</option></select></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:10px;padding:13px 16px;">
+        <div><div style="font-size:14px;font-weight:600;color:var(--navy);">Email Notifications</div><div style="font-size:12px;color:var(--text3);margin-top:2px;">Receive updates for grades & homework</div></div>
+        <div style="width:44px;height:24px;border-radius:12px;background:var(--indigo);cursor:pointer;position:relative;" onclick="showToast('Toggle saved ✓','ok')">
+          <div style="position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:#fff;"></div>
+        </div>
+      </div>
+    </div>`,
+    [{lbl:'Save',action:"showToast('Settings saved ✓','ok');closeModal()"},{lbl:'Cancel',action:'closeModal()',ghost:true}]
+  );
+}
+
+/* ══ BOOT ══ */
+function go(id,el){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  render(id);
+}
+
+function render(id){
+  const mc=document.getElementById('mainContent');
+  if(curUser.role==='student'){
+    if(id==='dash')mc.innerHTML=sDash();
+    else if(id==='hw')mc.innerHTML=sHW();
+    else if(id==='grades')mc.innerHTML=sGrades();
+    else if(id==='att')mc.innerHTML=sAtt();
+    else if(id==='pay')mc.innerHTML=sPay();
+    else if(id==='sched')mc.innerHTML=sSched();
+  } else {
+    if(id==='dash')mc.innerHTML=tDash();
+    else if(id==='gentry')mc.innerHTML=tGEntry();
+    else if(id==='roster')mc.innerHTML=tRoster();
+    else if(id==='assign')mc.innerHTML=tAssign();
+    else if(id==='ann')mc.innerHTML=tAnn();
+  }
+  mc.scrollTop=0;
+  setTimeout(()=>document.querySelectorAll('.pfill[data-w]').forEach(el=>el.style.width=el.dataset.w),80);
+}
+
+/* ══ STUDENT VIEWS ══ */
+function sDash(){
+  const pending=SD.homework.filter(h=>!h.done).length;
+  const pendPay=SD.payments.filter(p=>p.status==='pending').length;
+  return `
+  <div class="page-hdr"><h1>Good morning, ${curUser.name.split(' ')[0]} 👋</h1><p>${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})}</p></div>
+  <div class="kpi-row">
+    <div class="kpi blue"><div class="kpi-lbl">Overall GPA</div><div class="kpi-val">3.8</div><div class="kpi-up">↑ +0.1 this term</div></div>
+    <div class="kpi green"><div class="kpi-lbl">Attendance</div><div class="kpi-val">97%</div><div class="kpi-sub">58 of 60 days</div></div>
+    <div class="kpi amber"><div class="kpi-lbl">Pending HW</div><div class="kpi-val">${pending}</div><div class="kpi-sub" style="color:var(--amber);">Due this week</div></div>
+    <div class="kpi red"><div class="kpi-lbl">Pending Fees</div><div class="kpi-val">${pendPay}</div><div class="kpi-dn">Action needed</div></div>
+  </div>
+  <div class="g2">
+    <div class="card mb14">
+      <div class="card-hdr"><div><div class="card-title">Grade Summary</div><div class="card-sub">Spring semester 2024–25</div></div></div>
+      <div class="grade-grid">
+        ${SD.grades.map(g=>`
+          <div class="gs">
+            <div class="gs-name">${g.subj}</div>
+            <div class="gs-grade ${g.g}">${g.grade}</div>
+            <div class="gs-pct">${g.pct}%</div>
+            <div class="gs-trend" style="color:${g.trend.startsWith('+')?'var(--green)':g.trend==='-2'?'var(--red)':'var(--text3)'};">${g.trend==='–'?'Stable':g.trend.startsWith('+')?'↑ '+g.trend+'%':'↓ '+g.trend+'%'}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="card mb14">
+      <div class="card-hdr"><div><div class="card-title">Due This Week</div></div></div>
+      <div style="padding:10px;">
+        ${SD.homework.filter(h=>!h.done).slice(0,4).map(h=>`
+          <div class="hw-card" style="padding:11px 13px;">
+            <div class="hw-icon" style="background:${h.bg};width:34px;height:34px;font-size:15px;">${h.icon}</div>
+            <div style="flex:1;">
+              <div class="hw-subj">${h.subj}</div>
+              <div class="hw-title" style="font-size:13px;">${h.title}</div>
+              <div class="${'due-'+h.urg}" style="margin-top:4px;font-size:12px;">📅 Due ${h.due}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Today's Schedule — Monday Dec 9</div></div>
+    <div style="padding:12px 16px;">
+      ${SD.schedule[0].classes.map(c=>`
+        <div class="sched-item">
+          <div class="sched-time">${c.time}</div>
+          <div class="sched-bar" style="background:${c.color};"></div>
+          <div><div class="sched-class">${c.name}</div><div class="sched-room">${c.teacher} · ${c.room}</div></div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function sHW(){
+  const pend=SD.homework.filter(h=>!h.done);
+  const done=SD.homework.filter(h=>h.done);
+  return `
+  <div class="page-hdr"><h1>Homework & Assignments</h1><p>${pend.length} pending · ${done.length} completed</p></div>
+  <div class="card mb14">
+    <div class="card-hdr"><div><div class="card-title">Pending (${pend.length})</div></div><div style="font-size:12px;color:var(--text3);">Click ○ to mark complete</div></div>
+    <div style="padding:10px 14px;">${pend.map(hwCard).join('')}</div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Completed (${done.length})</div></div>
+    <div style="padding:10px 14px;">${done.map(hwCard).join('')}</div>
+  </div>`;
+}
+function hwCard(h){return `
+  <div class="hw-card" id="hw${h.id}" style="opacity:${h.done?.85:1};">
+    <div class="hw-icon" style="background:${h.bg};">${h.icon}</div>
+    <div style="flex:1;">
+      <div class="hw-subj">${h.subj}</div>
+      <div class="hw-title" style="${h.done?'text-decoration:line-through;color:var(--text3);':''}">${h.title}</div>
+      <div class="hw-desc">${h.desc}</div>
+      <div class="hw-meta">
+        <span class="${'due-'+h.urg}">📅 Due ${h.due}</span>
+        <span class="badge ${h.done?'badge-green':'badge-gray'}">${h.done?'Submitted':'Pending'}</span>
+      </div>
+    </div>
+    <div class="hw-check ${h.done?'done':''}" onclick="toggleHW(${h.id})">
+      <svg class="ck" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><polyline points="2,6 5,9 10,3"/></svg>
+    </div>
+  </div>`;}
+function toggleHW(id){const h=SD.homework.find(x=>x.id===id);if(h){h.done=!h.done;render('hw');showToast(h.done?'Marked complete ✓':'Marked pending','ok');}}
+
+function sGrades(){
+  return `
+  <div class="page-hdr"><h1>Academic Grades</h1><p>Spring 2024/25 · GPA 3.8</p></div>
+  ${SD.grades.map(g=>`
+    <div class="card mb14">
+      <div class="card-hdr" style="cursor:pointer;" onclick="this.nextElementSibling.classList.toggle('hidden')">
+        <div><div class="card-title">${g.subj}</div><div class="card-sub">${g.teacher}</div></div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="text-align:right;">
+            <div class="gs-grade ${g.g}" style="font-size:28px;">${g.grade}</div>
+            <div style="font-size:11px;color:var(--text3);">${g.pct}%</div>
+          </div>
+          <div style="width:48px;"><div class="pbar"><div class="pfill" style="background:${g.g==='A'?'var(--green)':g.g==='B'?'var(--indigo)':'var(--amber)'};width:0;" data-w="${g.pct}%"></div></div></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--text3);"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div>
+        <table class="dtable">
+          <thead><tr><th>Assessment</th><th>Score</th><th>Date</th><th>Weight</th></tr></thead>
+          <tbody>${g.items.map(i=>`<tr><td>${i.n}</td><td><strong>${i.s}</strong></td><td>${i.d}</td><td>${i.w}</td></tr>`).join('')}</tbody>
+        </table>
+      </div>
+    </div>`).join('')}`;
+}
+
+function sAtt(){
+  const a=SD.att;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const allDays=[];
+  // Dec starts on Sunday (offset 0)
+  a.days.forEach((s,i)=>allDays.push(s?{day:i+1,s}:null));
+  return `
+  <div class="page-hdr"><h1>Attendance Record</h1><p>Spring semester · Updated daily</p></div>
+  <div class="kpi-row">
+    <div class="kpi green"><div class="kpi-lbl">Rate</div><div class="kpi-val">${a.rate}%</div><div class="kpi-up">Excellent</div></div>
+    <div class="kpi blue"><div class="kpi-lbl">Present</div><div class="kpi-val">${a.present}</div><div class="kpi-sub">Days</div></div>
+    <div class="kpi red"><div class="kpi-lbl">Absent</div><div class="kpi-val">${a.absent}</div><div class="kpi-sub">Days</div></div>
+    <div class="kpi amber"><div class="kpi-lbl">Late</div><div class="kpi-val">${a.late}</div><div class="kpi-sub">Arrivals</div></div>
+  </div>
+  <div class="card">
+    <div class="card-hdr">
+      <div class="card-title">December 2024</div>
+      <div style="display:flex;gap:10px;font-size:12px;">
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#dcfce7;margin-right:4px;"></span>Present</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#fee2e2;margin-right:4px;"></span>Absent</span>
+        <span><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:#fef3c7;margin-right:4px;"></span>Late</span>
+      </div>
+    </div>
+    <div class="att-cal">
+      ${days.map(d=>`<div class="att-dh">${d}</div>`).join('')}
+      ${allDays.map(d=>d?`<div class="att-d att-${d.s}" title="${{P:'Present',A:'Absent',L:'Late',W:'Weekend',F:'Upcoming'}[d.s]||d.s}">${d.day}</div>`:`<div></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function sPay(){
+  const pend=SD.payments.filter(p=>p.status==='pending');
+  const paid=SD.payments.filter(p=>p.status==='paid');
+  const total=pend.reduce((a,p)=>a+p.amt,0);
+  return `
+  <div class="page-hdr"><h1>Fees & Payments</h1><p>Manage your school fees and payment history.</p></div>
+  <div class="kpi-row">
+    <div class="kpi red"><div class="kpi-lbl">Amount Due</div><div class="kpi-val">$${total.toLocaleString()}</div><div class="kpi-dn">${pend.length} invoices</div></div>
+    <div class="kpi green"><div class="kpi-lbl">Paid This Year</div><div class="kpi-val">$2,485</div><div class="kpi-up">3 payments</div></div>
+    <div class="kpi blue"><div class="kpi-lbl">Next Due</div><div class="kpi-val">Jan 15</div><div class="kpi-sub">Spring Tuition</div></div>
+    <div class="kpi amber"><div class="kpi-lbl">Payment Plan</div><div class="kpi-val">Active</div><div class="kpi-sub">2-installment</div></div>
+  </div>
+  <div class="card mb14">
+    <div class="card-hdr"><div class="card-title">Pending Invoices</div></div>
+    ${pend.map(p=>`
+      <div class="pay-row">
+        <div class="pay-icon" style="background:${p.bg};">${p.icon}</div>
+        <div class="pay-desc"><div class="pay-name">${p.name}</div><div class="pay-date">Due: ${p.due}</div></div>
+        <div class="pay-amt" style="color:var(--red);">$${p.amt.toLocaleString()}</div>
+        <button class="btn btn-primary" onclick="payNow(${p.id})" style="margin-left:10px;padding:7px 14px;font-size:12px;">Pay Now</button>
+      </div>`).join('')}
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Payment History</div></div>
+    ${paid.map(p=>`
+      <div class="pay-row">
+        <div class="pay-icon" style="background:${p.bg};">${p.icon}</div>
+        <div class="pay-desc"><div class="pay-name">${p.name}</div><div class="pay-date">Paid: ${p.paid}</div></div>
+        <div class="pay-amt" style="color:var(--green);">$${p.amt.toLocaleString()}</div>
+        <span class="badge badge-green" style="margin-left:10px;">Paid ✓</span>
+      </div>`).join('')}
+  </div>`;
+}
+function payNow(id){
+  const p=SD.payments.find(x=>x.id===id);
+  openModal('Confirm Payment',`
+    <p style="font-size:14px;color:var(--text2);margin-bottom:18px;">You are about to pay:</p>
+    <div style="background:var(--cream);border-radius:10px;padding:16px;margin-bottom:18px;">
+      <div style="font-size:15px;font-weight:700;color:var(--navy);">${p.name}</div>
+      <div style="font-size:28px;font-weight:800;color:var(--indigo);margin-top:4px;">$${p.amt.toLocaleString()}</div>
+    </div>
+    <div class="form-group"><label class="form-label">Card Number</label><input class="form-input" placeholder="4242 4242 4242 4242"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label class="form-label">Expiry</label><input class="form-input" placeholder="MM/YY"/></div>
+      <div class="form-group"><label class="form-label">CVV</label><input class="form-input" placeholder="•••"/></div>
+    </div>`,
+    [{lbl:'Cancel',action:'closeModal()',ghost:true},{lbl:`Pay $${p.amt}`,action:`confirmPay(${id})`}]
+  );
+}
+function confirmPay(id){
+  const p=SD.payments.find(x=>x.id===id);
+  if(p){p.status='paid';p.paid='Today';}
+  closeModal();render('pay');showToast('Payment successful! Receipt sent. ✓','ok');
+}
+
+function sSched(){
+  return `
+  <div class="page-hdr"><h1>Class Schedule</h1><p>Spring 2024/25 · Grade ${curUser.class}</p></div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">This Week</div></div>
+    <div style="padding:14px 18px;">
+      ${SD.schedule.map(day=>`
+        <div class="sched-day">
+          <div class="sched-date-lbl">${day.day} — ${day.date}</div>
+          ${day.classes.map(c=>`
+            <div class="sched-item">
+              <div class="sched-time">${c.time}</div>
+              <div class="sched-bar" style="background:${c.color};"></div>
+              <div><div class="sched-class">${c.name}</div><div class="sched-room">${c.teacher} · ${c.room}</div></div>
+            </div>`).join('')}
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+/* ══ TEACHER VIEWS ══ */
+function tDash(){
+  return `
+  <div class="page-hdr"><h1>Welcome, ${curUser.name} 👋</h1><p>${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})}</p></div>
+  <div class="kpi-row">
+    <div class="kpi blue"><div class="kpi-lbl">Total Students</div><div class="kpi-val">82</div><div class="kpi-sub">Across 3 classes</div></div>
+    <div class="kpi green"><div class="kpi-lbl">Avg Attendance</div><div class="kpi-val">93%</div><div class="kpi-up">↑ 2% this week</div></div>
+    <div class="kpi amber"><div class="kpi-lbl">Ungraded</div><div class="kpi-val">12</div><div class="kpi-sub" style="color:var(--amber);">Need review</div></div>
+    <div class="kpi red"><div class="kpi-lbl">At-Risk</div><div class="kpi-val">3</div><div class="kpi-dn">Below 75%</div></div>
+  </div>
+  <div class="g2">
+    <div class="card mb14">
+      <div class="card-hdr"><div class="card-title">My Classes</div></div>
+      ${TD.classes.map(c=>`
+        <div class="pay-row" style="cursor:pointer;" onclick="go('gentry',document.querySelector('[data-sec=gentry]'))">
+          <div class="pay-icon" style="background:${c.color};font-size:16px;">📚</div>
+          <div class="pay-desc"><div class="pay-name">${c.name} — ${c.subj}</div><div class="pay-date">${c.students} students · ${c.room} · ${c.times}</div></div>
+          <span class="badge badge-blue">${c.id}</span>
+        </div>`).join('')}
+    </div>
+    <div class="card mb14">
+      <div class="card-hdr"><div class="card-title">Assignments Due Soon</div></div>
+      ${TD.assignments.slice(0,3).map(a=>`
+        <div class="pay-row">
+          <div class="pay-icon" style="background:#dbeafe;font-size:16px;">📝</div>
+          <div class="pay-desc"><div class="pay-name">${a.title}</div><div class="pay-date">Grade ${a.cls} · Due ${a.due} · ${a.subs}/${a.total} submitted</div></div>
+          <div style="min-width:54px;"><div class="pbar" style="margin-bottom:3px;"><div class="pfill" style="background:var(--indigo);width:0;" data-w="${Math.round(a.subs/a.total*100)}%"></div></div><div style="font-size:10px;color:var(--text3);text-align:right;">${Math.round(a.subs/a.total*100)}%</div></div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div><div class="card-title">Grade 9A — Quick View</div></div><button class="btn btn-ghost" onclick="go('gentry',document.querySelector('[data-sec=gentry]'))" style="font-size:12px;">Enter Grades →</button></div>
+    <table class="dtable">
+      <thead><tr><th>Student</th><th>Attendance</th><th>Avg Score</th><th>Grade</th><th>Status</th></tr></thead>
+      <tbody>
+        ${TD.students.map(s=>`
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:26px;height:26px;border-radius:50%;background:var(--indigo);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;">${s.name.split(' ').map(n=>n[0]).join('')}</div>${s.name}</div></td>
+            <td><div style="display:flex;align-items:center;gap:7px;"><div class="pbar" style="width:46px;"><div class="pfill" style="background:${s.att>=90?'var(--green)':s.att>=80?'var(--amber)':'var(--red)'};width:${s.att}%;"></div></div>${s.att}%</div></td>
+            <td>${s.avg}%</td>
+            <td style="font-weight:700;color:${s.avg>=90?'var(--green)':s.avg>=75?'var(--indigo)':s.avg>=60?'var(--amber)':'var(--red)'};">${s.grade}</td>
+            <td><span class="badge ${s.avg>=90?'badge-green':s.avg>=75?'badge-blue':'badge-red'}">${s.avg>=90?'Excellent':s.avg>=75?'On Track':'At Risk'}</span></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function tGEntry(){
+  return `
+  <div class="page-hdr"><h1>Grade Entry</h1><p>Grade 9A — Mathematics · ${TD.students.length} students</p></div>
+  <div class="card">
+    <div class="card-hdr">
+      <div><div class="card-title">Grade 9A — Mathematics</div><div class="card-sub">Spring 2024/25 · Click any score to edit</div></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="showToast('CSV import ready','')">📥 Import CSV</button>
+        <button class="btn btn-primary" onclick="saveGrades()">💾 Save All Grades</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="dtable" style="min-width:680px;">
+        <thead><tr><th>Student</th><th>Quiz 1 /50</th><th>Quiz 2 /50</th><th>Midterm /100</th><th>Project /100</th><th>Average</th><th>Grade</th></tr></thead>
+        <tbody>
+          ${TD.students.map((s,i)=>`
+            <tr>
+              <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:27px;height:27px;border-radius:50%;background:var(--indigo3);border:1.5px solid var(--indigo);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--indigo);">${s.name.split(' ').map(n=>n[0]).join('')}</div>${s.name}</div></td>
+              <td><input class="gentry-input" type="number" min="0" max="50" value="${s.q1}" onchange="upGrade(${i},'q1',this.value)"/></td>
+              <td><input class="gentry-input" type="number" min="0" max="50" value="${s.q2}" onchange="upGrade(${i},'q2',this.value)"/></td>
+              <td><input class="gentry-input" type="number" min="0" max="100" value="${s.mid}" onchange="upGrade(${i},'mid',this.value)" style="width:70px;"/></td>
+              <td><input class="gentry-input" type="number" min="0" max="100" value="${s.proj}" onchange="upGrade(${i},'proj',this.value)" style="width:70px;"/></td>
+              <td><span id="avg${i}" style="font-weight:700;">${s.avg}%</span></td>
+              <td><span id="grd${i}" class="badge ${s.avg>=90?'badge-green':s.avg>=75?'badge-blue':'badge-red'}">${s.grade}</span></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="upload-area" onclick="showToast('CSV import — drop file here','')">
+      <div style="font-size:32px;margin-bottom:10px;">📄</div>
+      <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px;">Drop CSV or click to import grades</div>
+      <div style="font-size:12px;color:var(--text3);">Supports standard gradebook format (.csv, .xlsx)</div>
+    </div>
+  </div>`;
+}
+function upGrade(i,field,val){
+  const s=TD.students[i];s[field]=parseInt(val)||0;
+  const avg=Math.round((s.q1/50+s.q2/50)*25+s.mid*0.3+s.proj*0.2);
+  s.avg=avg;
+  const g=avg>=97?'A+':avg>=93?'A':avg>=90?'A-':avg>=87?'B+':avg>=83?'B':avg>=80?'B-':avg>=77?'C+':avg>=73?'C':avg>=70?'C-':avg>=60?'D':'F';
+  s.grade=g;
+  const ae=document.getElementById(`avg${i}`),ge=document.getElementById(`grd${i}`);
+  if(ae)ae.textContent=avg+'%';
+  if(ge){ge.textContent=g;ge.className=`badge ${avg>=90?'badge-green':avg>=75?'badge-blue':'badge-red'}`;}
+}
+function saveGrades(){showToast('Grades saved and students notified ✓','ok');}
+
+function tRoster(){
+  const s=TD.students;
+  const avgAtt=Math.round(s.reduce((a,x)=>a+x.att,0)/s.length);
+  const avgGrade=Math.round(s.reduce((a,x)=>a+x.avg,0)/s.length);
+  return `
+  <div class="page-hdr"><h1>Class Roster</h1><p>Grade 9A — Mathematics · Spring 2024/25</p></div>
+  <div class="card">
+    <div class="rstat-row">
+      <div class="rstat"><div class="rstat-val">28</div><div class="rstat-lbl">Enrolled</div></div>
+      <div class="rstat"><div class="rstat-val">${avgAtt}%</div><div class="rstat-lbl">Avg Attendance</div></div>
+      <div class="rstat"><div class="rstat-val">${avgGrade}%</div><div class="rstat-lbl">Class Average</div></div>
+      <div class="rstat"><div class="rstat-val">3</div><div class="rstat-lbl">At Risk</div></div>
+    </div>
+    <table class="dtable">
+      <thead><tr><th>Student</th><th>ID</th><th>Attendance</th><th>Average</th><th>Grade</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        ${s.map(st=>`
+          <tr>
+            <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:50%;background:var(--indigo3);border:1.5px solid var(--indigo);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--indigo);">${st.name.split(' ').map(n=>n[0]).join('')}</div>${st.name}</div></td>
+            <td style="font-size:12px;color:var(--text3);">${st.id}</td>
+            <td><div style="display:flex;align-items:center;gap:7px;"><div class="pbar" style="width:50px;"><div class="pfill" style="background:${st.att>=90?'var(--green)':st.att>=80?'var(--amber)':'var(--red)'};width:${st.att}%;"></div></div>${st.att}%</div></td>
+            <td>${st.avg}%</td>
+            <td style="font-weight:700;color:${st.avg>=90?'var(--green)':st.avg>=75?'var(--indigo)':st.avg>=60?'var(--amber)':'var(--red)'};">${st.grade}</td>
+            <td><span class="badge ${st.avg>=90?'badge-green':st.avg>=75?'badge-blue':'badge-red'}">${st.avg>=90?'Excellent':st.avg>=75?'On Track':'At Risk'}</span></td>
+            <td><button class="btn btn-ghost" onclick="viewStudent('${st.id}')" style="padding:5px 11px;font-size:12px;">View</button></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+function viewStudent(id){
+  const s=TD.students.find(x=>x.id===id);
+  openModal(s.name,`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="background:var(--cream);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Grade</div>
+        <div class="gs-grade ${s.avg>=90?'A':s.avg>=75?'B':'C'}" style="font-size:40px;">${s.grade}</div>
+        <div style="font-size:13px;color:var(--text3);">${s.avg}%</div>
+      </div>
+      <div style="background:var(--cream);border-radius:10px;padding:14px;text-align:center;">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Attendance</div>
+        <div style="font-size:40px;font-weight:800;color:${s.att>=90?'var(--green)':'var(--red)'};">${s.att}%</div>
+        <div class="pbar" style="margin-top:8px;"><div class="pfill" style="background:${s.att>=90?'var(--green)':'var(--red)'};width:${s.att}%;"></div></div>
+      </div>
+    </div>
+    <table class="dtable"><thead><tr><th>Assessment</th><th>Score</th></tr></thead><tbody>
+      <tr><td>Quiz 1</td><td><strong>${s.q1}/50</strong></td></tr>
+      <tr><td>Quiz 2</td><td><strong>${s.q2}/50</strong></td></tr>
+      <tr><td>Midterm</td><td><strong>${s.mid}/100</strong></td></tr>
+      <tr><td>Project</td><td><strong>${s.proj}/100</strong></td></tr>
+    </tbody></table>`,
+    [{lbl:'Contact Parent',action:`showToast('Parent notified via email','ok');closeModal()`,ghost:true},{lbl:'Close',action:'closeModal()'}]
+  );
+}
+
+function tAssign(){
+  return `
+  <div class="page-hdr"><h1>Assignments</h1><p>Create homework, quizzes, and exams for your classes.</p></div>
+  <div class="card mb14">
+    <div class="card-hdr"><div class="card-title">Create New Assignment</div></div>
+    <div class="aform">
+      <div class="aform-grid">
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Title</label><input class="form-input" id="aTitle" placeholder="Assignment title..."/></div>
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Class</label>
+          <select class="form-input" id="aCls"><option>Grade 9A</option><option>Grade 10B</option><option>Grade 11A</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Type</label>
+          <select class="form-input"><option>Homework</option><option>Quiz</option><option>Exam</option><option>Project</option></select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Due Date</label><input class="form-input" type="date" id="aDue"/></div>
+      </div>
+      <div class="form-group" style="margin-top:12px;margin-bottom:14px;"><label class="form-label">Instructions</label><textarea class="atextarea" placeholder="Describe the assignment requirements and grading criteria..."></textarea></div>
+      <button class="btn btn-primary" onclick="createAssign()">📤 Publish Assignment</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Active Assignments</div></div>
+    <table class="dtable">
+      <thead><tr><th>Assignment</th><th>Class</th><th>Type</th><th>Due</th><th>Submissions</th><th>Progress</th></tr></thead>
+      <tbody>
+        ${TD.assignments.map(a=>`
+          <tr>
+            <td>${a.title}</td>
+            <td><span class="badge badge-blue">Grade ${a.cls}</span></td>
+            <td>${a.type}</td>
+            <td>${a.due}</td>
+            <td>${a.subs}/${a.total}</td>
+            <td><div style="display:flex;align-items:center;gap:7px;"><div class="pbar" style="flex:1;"><div class="pfill" style="background:var(--indigo);width:0;" data-w="${Math.round(a.subs/a.total*100)}%"></div></div><span style="font-size:11px;color:var(--text3);">${Math.round(a.subs/a.total*100)}%</span></div></td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+function createAssign(){
+  const t=document.getElementById('aTitle').value||'New Assignment';
+  TD.assignments.unshift({id:99,title:t,cls:'9A',due:document.getElementById('aDue').value||'TBD',subs:0,total:28,type:'Homework'});
+  render('assign');showToast(`"${t}" published to students ✓`,'ok');
+}
+
+function tAnn(){
+  return `
+  <div class="page-hdr"><h1>Announcements</h1><p>Post messages and updates to your classes.</p></div>
+  <div class="card mb14">
+    <div class="card-hdr"><div class="card-title">New Announcement</div></div>
+    <div class="aform">
+      <div class="aform-grid">
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Title</label><input class="form-input" id="annT" placeholder="Announcement title..."/></div>
+        <div class="form-group" style="margin-bottom:0;"><label class="form-label">Class</label>
+          <select class="form-input" id="annC"><option>Grade 9A</option><option>Grade 10B</option><option>Grade 11A</option><option>All Classes</option></select>
+        </div>
+      </div>
+      <div class="form-group" style="margin:12px 0 14px;"><label class="form-label">Message</label><textarea class="atextarea" id="annB" style="min-height:90px;" placeholder="Write your message here..."></textarea></div>
+      <button class="btn btn-primary" onclick="postAnn()">📢 Post Announcement</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hdr"><div class="card-title">Posted</div></div>
+    <div style="padding:12px 16px;">
+      ${TD.announcements.map(a=>`
+        <div class="ann-card">
+          <div class="ann-head">
+            <div><div class="ann-title">${a.title}</div><div class="ann-class">${a.cls}</div></div>
+            <span class="badge badge-blue">${a.date}</span>
+          </div>
+          <div class="ann-body">${a.body}</div>
+          <div class="ann-meta">
+            <span>${a.author}</span>
+            <span>·</span>
+            <span style="color:var(--red);cursor:pointer;" onclick="delAnn(${a.id})">Delete</span>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+function postAnn(){
+  const t=document.getElementById('annT').value;
+  const b=document.getElementById('annB').value;
+  const c=document.getElementById('annC').value;
+  if(!t||!b){showToast('Fill in title and message','err');return;}
+  TD.announcements.unshift({id:Date.now(),title:t,cls:c,body:b,date:'Today',author:curUser.name});
+  render('ann');showToast('Announcement posted ✓','ok');
+}
+function delAnn(id){TD.announcements=TD.announcements.filter(a=>a.id!==id);render('ann');showToast('Deleted','');}
+
+/* ══ MODAL & TOAST ══ */
+function openModal(title,body,actions=[]){
+  document.getElementById('mTitle').textContent=title;
+  document.getElementById('mBody').innerHTML=body;
+  document.getElementById('mFoot').innerHTML=actions.map(a=>
+    `<button class="btn ${a.ghost?'btn-ghost':'btn-primary'}" onclick="${a.action}">${a.lbl}</button>`
+  ).join('');
+  document.getElementById('modalBg').classList.remove('hidden');
+  setTimeout(()=>document.querySelectorAll('.pfill[data-w]').forEach(el=>el.style.width=el.dataset.w),80);
+}
+function closeModal(){document.getElementById('modalBg').classList.add('hidden');}
+
+let _toast;
+function showToast(msg,type=''){
+  clearTimeout(_toast);
+  const old=document.querySelector('.toast');if(old)old.remove();
+  const t=document.createElement('div');t.className=`toast ${type}`;t.textContent=msg;
+  document.body.appendChild(t);
+  _toast=setTimeout(()=>t.remove(),3000);
+}
+
+/* ══ ICONS ══ */
+const sv=(d)=>`<svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const iGrid=()=>sv('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>');
+const iBook=()=>sv('<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>');
+const iStar=()=>sv('<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>');
+const iCal=()=>sv('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>');
+const iCard=()=>sv('<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>');
+const iClock=()=>sv('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>');
+const iUsers=()=>sv('<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>');
+const iBell=()=>sv('<path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/>');
+
+renderDemos();
+</script>
+</body>
+</html>
